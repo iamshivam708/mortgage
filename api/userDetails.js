@@ -54,9 +54,9 @@ router.post('/file',upload.single('file'),(req,res) =>{
     var time = new Date();
     db.query("INSERT INTO product(email,image,title,description,price,time) VALUES(?,?,?,?,?,?)",[email,image,title,description,price,time],function(error,result){
         if(error){
-            console.log(error);
+            res.send(error);
         }else{
-            console.log('successfull');
+            res.send('successfull');
         }
     })
 })
