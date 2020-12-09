@@ -2,17 +2,17 @@
   <div class="container-fluid mt-5" align="center">
     <h3 v-show="!requiresAuth">Login To See</h3>
     <div class="row" v-show="requiresAuth">
-      <div class="col-2" style="border-right:2px solid red">
+      <div class=" d-none d-lg-block col-sm-2" style="border-right:2px solid red">
       <h2>Categories</h2>
       </div>
 
       <div class="col-10" style="padding-left:60px">
           <h2>All Posts</h2>
           <div class="container">
-          <div class="row" v-for="product in products" v-bind:key="product.product_id">
-              <div class="col-sm-6 col-md-4 col-lg-3">
+          <div class="row">
+              <div class="col-sm-6 col-md-6 col-lg-3 mt-3" v-for="product in products" v-bind:key="product.product_id">
                 <div class="card">
-                <img class="card-img-top" :src="'../api/uploads/'+product.image" alt="Card image cap">
+                <img class="card-img-top" :src="'../api/uploads/'+product.image" alt="Card image cap" height="200">
                   <div class="card-body">
                     <h5 class="card-title">{{product.title}}</h5>
                     <p class="card-text">&#8377; {{product.price}}</p>
