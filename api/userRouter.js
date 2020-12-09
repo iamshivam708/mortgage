@@ -65,5 +65,17 @@ router.delete('/delete/:email', (req,res) =>{
     })
 })
 
+// getting details of users from email
+router.get('/details/user/:email',(req,res) =>{
+    var email = req.params.email;
+    db.query("SELECT * FROM signup WHERE email=?",[email],function(result,error){
+        if(error){
+            res.send(error);
+        }
+        else{
+            res.send(result);
+        }
+    })
+})
 
 module.exports = router
