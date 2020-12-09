@@ -13,24 +13,17 @@ var storage = multer.diskStorage({
    
   var upload = multer({ storage: storage })
 
-
-router.get('/:id',(req,res) =>{
-    db.query("SELECT * FROM login WHERE sess_id =?",[req.params.id],(error,rows, fields) =>{
+  // getting all products
+router.get('/getAll',(req,res) =>{
+    db.query("SELECT * FROM product",function(result,error){
         if(error){
-            res.send(error);
-        }
-        else{
-            var email = rows[0].email;
-            db.query("SELECT * FROM signup WHERE email=?",[email],(error,rows,fields) =>{
-                if(error){
-                    res.send(error)
-                }else{
-                    res.send(rows[0]);
-                }
-            })
+            res.send(error)
+        }else{
+            res.send(result);
         }
     })
 })
+
 
 router.put('/update',(req,res) =>{
     var user_id = req.body.user_id
@@ -114,12 +107,32 @@ router.put('/product/update',upload.single('file'),(req,res) =>{
     })
 })
 
+//delete a post
 router.delete('/product/delete/:id',(req,res) =>{
     db.query("DELETE FROM product WHERE product_id=?",[req.params.id],function(error,result){
         if(error){
             res.send(error)
         }else{
             res.send("success");
+        }
+    })
+})
+
+//getting signup details
+router.get('/:id',(req,res) =>{
+    db.query("SELECT * FROM login WHERE sess_id =?",[req.params.id],(error,rows, fields) =>{
+        if(error){
+            res.send(error);
+        }
+        else{
+            var email = rows[0].email;
+            db.query("SELECT * FROM signup WHERE email=?",[email],(error,rows,fields) =>{
+                if(error){
+                    res.send(error)
+                }else{
+                    res.send(rows[0]);
+                }
+            })
         }
     })
 })
