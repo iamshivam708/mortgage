@@ -2,6 +2,58 @@ const express = require('express');
 const router = express.Router();
 const db = require('./Db.js')
 
+
+//delete offer data after it is completed
+router.delete('/confirm/offer/:id',function(req,res){
+    db.query("DELETE FROM offer WHERE offer_id=?",[req.params.id],function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            console.log("success");
+        }
+    })
+})
+
+//getting confirm data
+router.get('/get/data/:email',function(req,res){
+    db.query("SELECT * FROM confirm WHERE seller_email=?",[req.params.email],function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            res.send(result);
+        }
+    })
+})
+
+//getting data from offer using offerid
+router.get('/confirm/offer/:id',function(req,res){
+    db.query("SELECT * FROM offer WHERE offer_id=?",[req.params.id],function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            res.send(result);
+        }
+    })
+})
+
+//confirm the order
+router.post('/confirm',function(req,res){
+    var fname = req.body.fname;
+    var mname = req.body.mname;
+    var lname = req.body.lname;
+    var email = req.body.email;
+    var phone = req.body.phone;
+    var product_id = req.body.product_id;
+    var seller_email = req.body.user_email;
+    db.query("INSERT INTO confirm(fname,mname,lname,email,phone,product_id,seller_email) VALUES(?,?,?,?,?,?,?)",[fname,mname,lname,email,phone,product_id,seller_email],function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            res.send("success");
+        }
+    })
+})
+
 //deleting details
 router.delete('/delete/msg/:id',function(req,res){
     db.query("DELETE FROM offer WHERE offer_id=?",[req.params.id],function(error,result){

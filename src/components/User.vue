@@ -27,7 +27,25 @@
             <td>{{msg.email}}</td>
             <td>{{msg.phone}}</td>
             <td>{{msg.product_id}}</td>
+            <td><router-link :to="'/confirm/'+msg.offer_id" class="btn btn-primary">Confirm</router-link></td>
             <td><button @click="deleteOffer(msg.offer_id)" class="btn btn-danger">Delete</button></td>
+        </tr>
+        </table>
+    </div>
+    <div class="card-footer">
+        <h3>Confirmed Users</h3>
+        <table class="table">
+        <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Product_id</th>
+        </tr>
+        <tr v-for="getData in getDatas" v-bind:key="getData.confirm_id">
+            <td>{{getData.fname}}&nbsp;{{getData.lname}}</td>
+            <td>{{getData.email}}</td>
+            <td>{{getData.phone}}</td>
+            <td>{{getData.product_id}}</td>
         </tr>
         </table>
     </div>
@@ -73,7 +91,8 @@ data(){
         user:{},
         products:{},
         msgs:{},
-        getData:false
+        confirm:{},
+        getDatas:{}
 }
 },
 created(){
@@ -99,6 +118,12 @@ created(){
     let url2 = `http://localhost:3000/msg/${email}`;
     this.axios.get(url2).then((response) =>{
         this.msgs= response.data;
+    })
+
+    var email = this.$session.get('email');
+    let url3 = `http://localhost:3000/get/data/${email}`;
+    this.axios.get(url3).then(response =>{
+        this.getDatas = response.data;
     })
 },
 methods:{

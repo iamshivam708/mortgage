@@ -6,6 +6,7 @@ import editUser from './components/editUser'
 import addProduct from './components/addProduct'
 import editProduct from './components/editProduct'
 import singlePost from './components/singlePost'
+import Confirm from './components/Confirm'
 
 export default[
     {path:'/', name:'index', component: Index},
@@ -15,5 +16,6 @@ export default[
     {path:'/edit/:id', name:'edit', component: editUser},
     {path:'/add', name:'add', component:addProduct},
     {path:'/product/edit/:id', name:'editproduct', component:editProduct},
-    {path:'/singlepost/:id',name:'singlepost', component:singlePost}
+    {path:'/singlepost/:id',name:'singlepost', component:singlePost},
+    {path:'/confirm/:id', name:'confirm', component: Confirm}
 ]
