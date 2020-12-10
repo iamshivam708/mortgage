@@ -10,8 +10,11 @@
         <p><strong>Address:</strong> {{user.address}}</p>
         <router-link :to="'/edit/'+ this.$session.id()" class="btn btn-primary">Edit</router-link>
     </div>
+    <div class="card-footer">
+        <p>Msg From Users</p>
     </div>
-    <div class="row">
+    </div>
+    <div class="row mt-4">
     <div class="col-12">
         <h3>Your Products</h3>
         <table class="table">
@@ -69,10 +72,15 @@ created(){
     this.axios.get(uri).then((response) =>{
         this.products = response.data;
     })
+
+    var email = this.$session.get('email');
+    let url2 = `http://localhost:3000/msg/${email}`;
+    this.axios.get(url2).then(response =>{
+        console.log(response);
+    })
 },
 methods:{
-    deleteProduct(id){
-        
+    deleteProduct(id){ 
         let url = `http://localhost:3000/user/product/delete/${id}`;
         this.axios.delete(url);
         location.reload();

@@ -13,6 +13,26 @@ var storage = multer.diskStorage({
    
   var upload = multer({ storage: storage })
 
+  // getting details of users from email for that post
+router.get('/post/details/:id',(req,res) =>{
+    var id = req.params.id;
+    db.query("SELECT * FROM product WHERE product_id=?",[id],function(error,rows,fields){
+        if(error){
+            res.send(error);
+        }
+        else{
+            var email = rows[0].email;
+            db.query("SELECT * FROM signup WHERE email=?",[email],function(result,error){
+                if(error){
+                    res.send(error);
+                }else{
+                    res.send(result)
+                }
+            })
+        }
+    })
+})
+
   // getting all products
 router.get('/getAll',(req,res) =>{
     db.query("SELECT * FROM product",function(result,error){
@@ -20,6 +40,26 @@ router.get('/getAll',(req,res) =>{
             res.send(error)
         }else{
             res.send(result);
+        }
+    })
+})
+
+//sending offer detail to other user
+router.post('/offer',(req,res) =>{
+    var user_email = req.body.user_email
+    var fname = req.body.fname;
+    var mname = req.body.mname;
+    var lname = req.body.lname;
+    var email = req.body.email;
+    var phone = req.body.phone;
+    var message = req.body.msg;
+    var product_id = req.body.product_id;
+
+    db.query("INSERT INTO offer(user_email,fname,mname,lname,email,phone,message,product_id) VALUES(?,?,?,?,?,?,?,?)",[user_email,fname,mname,lname,email,phone,message,product_id],function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            res.send("successfulll");
         }
     })
 })

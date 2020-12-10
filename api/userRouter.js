@@ -65,14 +65,24 @@ router.delete('/delete/:email', (req,res) =>{
     })
 })
 
-// getting details of users from email
-router.get('/details/user/:email',(req,res) =>{
+//showing msg from other users
+router.get('/msg/:email',function(req,res){
     var email = req.params.email;
-    db.query("SELECT * FROM signup WHERE email=?",[email],function(result,error){
+    db.query("SELECT * FROM offer WHERE email=?",[email],function(error,rows,fields){
+        if(error){
+            res.send(error)
+        }else{
+            res.send(rows);
+        }
+    })
+})
+
+router.get('/currentUser/:email',function(req,res){
+    var email = req.params.email;
+    db.query("SELECT * FROM signup WHERE email=?",[email],function(error,result){
         if(error){
             res.send(error);
-        }
-        else{
+        }else{
             res.send(result);
         }
     })
