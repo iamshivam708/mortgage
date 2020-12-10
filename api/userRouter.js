@@ -2,6 +2,28 @@ const express = require('express');
 const router = express.Router();
 const db = require('./Db.js')
 
+//deleting details
+router.delete('/delete/msg/:id',function(req,res){
+    db.query("DELETE FROM offer WHERE offer_id=?",[req.params.id],function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            res.send("successfully");
+        }
+    })
+})
+
+//showing details of msg to user
+router.get('/msg/:email',function(req,res){
+    db.query("SELECT * FROM offer where user_email=?",[req.params.email],function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            res.send(result);
+        }
+    })
+})
+
 //signup
 router.post('/signup',function(req,res){
     var fname  = req.body.fname;
@@ -61,18 +83,6 @@ router.delete('/delete/:email', (req,res) =>{
         }
         else{
             res.send("successsfull");
-        }
-    })
-})
-
-//showing msg from other users
-router.get('/msg/:email',function(req,res){
-    var email = req.params.email;
-    db.query("SELECT * FROM offer WHERE email=?",[email],function(error,rows,fields){
-        if(error){
-            res.send(error)
-        }else{
-            res.send(rows);
         }
     })
 })

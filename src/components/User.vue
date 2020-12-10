@@ -11,15 +11,34 @@
         <router-link :to="'/edit/'+ this.$session.id()" class="btn btn-primary">Edit</router-link>
     </div>
     <div class="card-footer">
-        <p>Msg From Users</p>
+        <h3>User's Messages</h3>
+        <table class="table">
+        <tr>
+            <th>User</th>
+            <th>Message</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Product_id</th>
+            <th>Action</th>
+        </tr>
+        <tr v-for="msg in msgs" v-bind:key="msg.offer_id">
+            <td>{{msg.fname}}&nbsp;{{msg.lname}}</td>
+            <td>{{msg.message}}</td>
+            <td>{{msg.email}}</td>
+            <td>{{msg.phone}}</td>
+            <td>{{msg.product_id}}</td>
+            <td><button @click="deleteOffer(msg.offer_id)" class="btn btn-danger">Delete</button></td>
+        </tr>
+        </table>
     </div>
-    </div>
+  </div>
     <div class="row mt-4">
     <div class="col-12">
         <h3>Your Products</h3>
         <table class="table">
         <thead class="thead-dark">
             <tr>
+            <th scope="col">#Id</th>
             <th scope="col">Image</th>
             <th scope="col">Title</th>
             <th scope="col">Description</th>
@@ -30,6 +49,7 @@
         </thead>
         <tbody>
             <tr v-for="product in products" v-bind:key="product.product_id">
+                <td>{{product.product_id}}</td>
                 <td><img :src="'..//api/uploads/'+product.image" height="50px" width="50px" class="img-fluid"></td>
                 <td>{{product.title}}</td>
                 <td>{{product.description}}</td>
@@ -51,8 +71,10 @@ data(){
     return{
         requiresAuth: false,
         user:{},
-        products:{}
-    }
+        products:{},
+        msgs:{},
+        getData:false
+}
 },
 created(){
    if(this.$session.exists()){
@@ -75,13 +97,18 @@ created(){
 
     var email = this.$session.get('email');
     let url2 = `http://localhost:3000/msg/${email}`;
-    this.axios.get(url2).then(response =>{
-        console.log(response);
+    this.axios.get(url2).then((response) =>{
+        this.msgs= response.data;
     })
 },
 methods:{
     deleteProduct(id){ 
         let url = `http://localhost:3000/user/product/delete/${id}`;
+        this.axios.delete(url);
+        location.reload();
+    },
+    deleteOffer(id){
+        let url = `http://localhost:3000/delete/msg/${id}`;
         this.axios.delete(url);
         location.reload();
     }

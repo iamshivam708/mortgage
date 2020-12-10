@@ -98,7 +98,7 @@ methods:{
             msg: this.msg
         }
         this.axios.post(url,offer).then(response =>{
-            console.log(response);
+            alert("message has been sent successfully");
             this.$router.push('/user');
             location.reload();
         })
