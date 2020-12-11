@@ -14,6 +14,9 @@ app.use(express.static('uploads'));
 const userDetails = require('./userDetails');
 app.use('/user',userDetails);
 
+const otherThings = require('./otherThings');
+app.use('/other',otherThings);
+
 app.listen(process.env.PORT || 3000,function(){
     console.log("Server running at port 3000");
 })

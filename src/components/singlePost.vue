@@ -6,6 +6,9 @@
             <h1 class="card-title">Post Description</h1>
             <span ><img :src="'..//api/uploads/'+product.image" width="50%" class="img-fluid"></span>
             <div class="card-body">
+            <button class="offset-5 btn btn-danger" v-on:click="Like" v-show="disabled">Like</button>
+            <h3>{{totalLikes}}</h3>
+            <button class="offset-5 btn btn-danger" v-on:click="Dislike" v-show="!disabled">Disike</button>
                 <h2 class="mt-2">Title: {{product.title}}</h2>
                 <h2 class="mt-2" style="color:red">Mortgaged Price: &#8377;{{product.price}}</h2>    
                 <h4>Description: {{product.description}}</h4>
@@ -14,10 +17,7 @@
         <div class="card mt-5" align="center">
             <h1 class="card-title">Mortgagor Details</h1>
             <div class="card-body">
-                <h2 class="mt-2">Name: {{user.fname}}&nbsp;{{user.lname}}</h2>
-                <h4 class="mt-2">Email: {{user.email}}</h4>    
-                <h4>Phone: {{user.phone}}</h4>
-                <h4>Address: {{user.address}}</h4>
+                <h2>Name: {{user.fname}}&nbsp;{{user.lname}}</h2>  
                 <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Send Offer</button>
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -64,7 +64,10 @@ data(){
         product:{},
         user:{},
         msg:'',
-        currentUser:{}
+        currentUser:{},
+        totalLikes:'',
+        disabled:false,
+        alreadyLiked:''
     }
 },
 created(){
@@ -82,6 +85,22 @@ created(){
     let url3 = `http://localhost:3000/currentUser/${email}`;
     this.axios.get(url3).then(r =>{
         this.currentUser = r.data[0];
+    })
+    let url4 = `http://localhost:3000/other/likes/${this.$route.params.id}`;
+        this.axios.get(url4).then(response =>{
+        this.totalLikes = response.data;
+      })
+
+    let url5 = "http://localhost:3000/other/check";
+    const details = {
+        product_id: this.$route.params.id,
+        email:  this.$session.get('email')
+    }
+    this.axios.post(url5,details).then(response =>{
+       this.alreadyLiked = response.data;
+       if(this.alreadyLiked != 1){
+           this.disabled = true;
+       }
     })
 },
 methods:{
@@ -102,6 +121,24 @@ methods:{
             this.$router.push('/user');
             location.reload();
         })
+    },
+    Like(){
+    let url ="http://localhost:3000/other";
+    let details = {
+        email: this.$session.get('email'),
+        product_id: this.$route.params.id
+    }
+    this.axios.post(url,details).then(response =>{
+        console.log(response);
+        location.reload();
+    })
+    },
+    Dislike(){
+    var product_id = this.$route.params.id;
+    var email = this.$session.get('email');
+    let url =`http://localhost:3000/other/delete/${product_id}&${email}`;
+    this.axios.delete(url);
+        location.reload();
     }
 }
 }
