@@ -3,7 +3,7 @@
     <h3 v-show="!requiresAuth">Login To See</h3>
     <div class="row" v-show="requiresAuth">
       <div class=" d-none d-lg-block col-sm-2" style="border-right:2px solid red">
-
+      
       <form @submit.prevent="search" method="post">
       <input type="text" v-model="query" class="form-control"/>
       <button class="btn btn-primary">Search</button>
@@ -39,15 +39,15 @@
 
 <script>
 export default {
-name:'category',
+name:'search',
 data(){
-    return{
-        requiresAuth:false,
-        products:{},
-        categories:{},
-        cat: this.$route.params.category,
-        query:''
-    }
+  return{
+    requiresAuth:false,
+    products:{},
+    categories:{},
+    query :'',
+    searched:this.$route.params.search
+  }
 },
 watch:{
     '$route' (to, from){
@@ -57,17 +57,17 @@ watch:{
     }
 },
 created(){
-    if(this.$session.exists()){
+  if(this.$session.exists()){
     this.requiresAuth = true;
-    let url = `http://localhost:3000/other/category/${this.cat}`;
+    let url = `http://localhost:3000/other/search/${this.searched}`;
     this.axios.get(url).then(response =>{
-        this.products = response.data;
+      this.products = response.data;
     })
-    let url2 = "http://localhost:3000/other/cat";
+  let url2 = "http://localhost:3000/other/cat";
     this.axios.get(url2).then(response =>{
       this.categories = response.data;
     })
-    }
+  }
 },
 methods:{
   search(){

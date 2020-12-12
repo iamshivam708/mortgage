@@ -3,6 +3,12 @@
     <h3 v-show="!requiresAuth">Login To See</h3>
     <div class="row" v-show="requiresAuth">
       <div class=" d-none d-lg-block col-sm-2" style="border-right:2px solid red">
+
+      <form @submit.prevent="search" method="post">
+      <input type="text" v-model="query" class="form-control"/>
+      <button class="btn btn-primary">Search</button>
+      </form>
+
       <h2>Categories</h2>
       <ul class="list-group" v-for="category in categories" v-bind:key="category.cat_id">
         <li class="list-group-item"><router-link :to="'/category/'+category.category">{{category.category}}</router-link></li>
@@ -38,7 +44,8 @@ data(){
   return{
     requiresAuth:false,
     products:{},
-    categories:{}
+    categories:{},
+    query:''
   }
 },
 created(){
@@ -53,6 +60,11 @@ created(){
       this.categories = response.data;
     })
 
+  }
+},
+methods:{
+  search(){
+    this.$router.push('/search/'+ this.query);
   }
 }
 }

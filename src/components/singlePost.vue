@@ -48,8 +48,13 @@
             </div>
         </div>
         </div>
-        <div class="col-2">
+        <div class="col-2 mt-5">
             <div class="card" align="center">
+                <h3>Search</h3>
+                <form @submit.prevent="search" method="post">
+                <input type="text" v-model="query" class="form-control"/>
+                <button class="btn btn-primary">Search</button>
+                </form>
             </div>
         </div>
     </div>
@@ -67,7 +72,8 @@ data(){
         currentUser:{},
         totalLikes:'',
         disabled:false,
-        alreadyLiked:''
+        alreadyLiked:'',
+        query:''
     }
 },
 created(){
@@ -139,6 +145,9 @@ methods:{
     let url =`http://localhost:3000/other/delete/${product_id}&${email}`;
     this.axios.delete(url);
         location.reload();
+    },
+    search(){
+        this.$router.push('/search/'+ this.query);
     }
 }
 }

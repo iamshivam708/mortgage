@@ -2,6 +2,17 @@ const express = require('express')
 const router = express.Router();
 const db = require('./Db.js');
 
+//geting product with search
+router.get("/search/:search",function(req,res){
+    db.query("SELECT * FROM product WHERE title LIKE"+ db.escape('%'+req.params.search+'%') +"OR description LIKE"+ db.escape('%'+req.params.search+'%') ,function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            res.send(result);
+        }
+    })
+})
+
 //getting categories
 router.get('/cat',function(req,res){
     db.query("SELECT * FROM categories",function(error,result){
