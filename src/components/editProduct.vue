@@ -19,6 +19,11 @@
     <label>Title</label>
         <input type="text" name="title" placeholder="Product Title" class="form-control" v-model="product.title"/>   
     </div>
+    <div class="form">
+        <select name="category" v-model="product.category" class="form-control">
+        <option v-for="category in categories" :key="category.cat_id">{{category.category}}</option>
+        </select>
+    </div>
     <div class="form-group">
     <label>Description</label>
         <input type="text" name="description" placeholder="Product Description" class="form-control" v-model="product.description" />   
@@ -38,7 +43,8 @@ name:'editProduct',
 data(){
     return{
         requiresAuth: false,
-        product:{}
+        product:{},
+        categories:{}
     }
 },
 created(){
@@ -49,6 +55,10 @@ created(){
         this.axios.get(url).then((response) =>{
            this.product = response.data[0];
         })
+        let url2= "http://localhost:3000/other/cat"
+       this.axios.get(url2).then(response =>{
+           this.categories = response.data;
+       })
     }else{
         this.$router.push('/');
     }

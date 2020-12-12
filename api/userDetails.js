@@ -89,10 +89,11 @@ router.post('/file',upload.single('file'),(req,res) =>{
     var email = req.body.email;
     var image = req.file.originalname;
     var title = req.body.title;
+    var category = req.body.category
     var description = req.body.description;
     var price = req.body.price;
     var time = new Date();
-    db.query("INSERT INTO product(email,image,title,description,price,time) VALUES(?,?,?,?,?,?)",[email,image,title,description,price,time],function(error,result){
+    db.query("INSERT INTO product(email,image,title,category,description,price,time) VALUES(?,?,?,?,?,?,?)",[email,image,title,category,description,price,time],function(error,result){
         if(error){
             res.send(error);
         }else{
@@ -134,11 +135,12 @@ router.put('/product/update',upload.single('file'),(req,res) =>{
     }
     var email = req.body.email;
     var title = req.body.title;
+    var category = req.body.category;
     var description = req.body.description;
     var price = req.body.price;
     var time = new Date();
     var id= req.body.product_id;
-    db.query("UPDATE product SET email='"+email+"',image='"+image+"',title='"+title+"',description='"+description+"',price='"+price+"',time='"+time+"' WHERE product_id='"+id+"'",function(error,result){
+    db.query("UPDATE product SET email='"+email+"',image='"+image+"',title='"+title+"',category='"+category+"',description='"+description+"',price='"+price+"',time='"+time+"' WHERE product_id='"+id+"'",function(error,result){
         if(error){
             console.log(error);
         }else{

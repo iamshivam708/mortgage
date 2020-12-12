@@ -2,6 +2,32 @@ const express = require('express')
 const router = express.Router();
 const db = require('./Db.js');
 
+//getting categories
+router.get('/cat',function(req,res){
+    db.query("SELECT * FROM categories",function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            res.send(result);
+        }
+    })
+})
+
+
+
+//getting liked posts for particular user
+router.get('/liked/:email',function(req,res){
+    db.query("SELECT * FROM likes WHERE email=?",[req.params.email],function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            res.send(result);
+        }
+    })
+})
+
+
+
 //getting all data for particular post
 router.get("/likes/:id",function(req,res){
     db.query("SELECT COUNT(*) as cnt FROM likes WHERE product_id=?",[req.params.id],function(error,result){

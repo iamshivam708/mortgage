@@ -4,6 +4,9 @@
     <div class="row" v-show="requiresAuth">
       <div class=" d-none d-lg-block col-sm-2" style="border-right:2px solid red">
       <h2>Categories</h2>
+      <ul class="list-group" v-for="category in categories" v-bind:key="category.cat_id">
+        <li class="list-group-item">{{category.category}}</li>
+      </ul>
       </div>
 
       <div class="col-10" style="padding-left:60px">
@@ -34,7 +37,8 @@ name:'index',
 data(){
   return{
     requiresAuth:false,
-    products:{}
+    products:{},
+    categories:{}
   }
 },
 created(){
@@ -44,6 +48,11 @@ created(){
     this.axios.get(url).then(response =>{
       this.products = response.data;
     })
+  let url2 = "http://localhost:3000/other/cat";
+    this.axios.get(url2).then(response =>{
+      this.categories = response.data;
+    })
+
   }
 }
 }

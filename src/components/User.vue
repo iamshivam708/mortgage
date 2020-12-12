@@ -32,7 +32,7 @@
         </tr>
         </table>
     </div>
-    <div class="card-footer">
+    <div class="card-footer mt-3">
         <h3>Confirmed Users</h3>
         <table class="table">
         <tr>
@@ -49,6 +49,19 @@
         </tr>
         </table>
     </div>
+    <div class="card-footer mt-3">
+        <h3>Liked Posts</h3>
+        <table class="table">
+        <tr>
+            <th>post</th>
+            <th>action</th>
+        </tr>
+        <tr v-for="like in likes" v-bind:key="like.like_id">
+            <td>{{like.product_id}}</td>
+            <td><router-link :to="'/singlePost/'+ like.product_id">View</router-link></td>
+        </tr>
+        </table>
+    </div>
   </div>
     <div class="row mt-4">
     <div class="col-12">
@@ -61,6 +74,7 @@
             <th scope="col">Title</th>
             <th scope="col">Description</th>
             <th scope="col">Price</th>
+            <th scope="col">Category</th>
             <th scope="col" colspan="2">Action</th>
             <th><router-link to="/add" class="btn btn-primary">Add</router-link></th>
             </tr>
@@ -72,6 +86,7 @@
                 <td>{{product.title}}</td>
                 <td>{{product.description}}</td>
                 <td>&#8377; {{product.price}}</td>
+                <td>{{product.category}}</td>
                 <td><router-link :to="'/product/edit/'+ product.product_id"  class="btn btn-primary">Edit</router-link>
                 <td><button @click="deleteProduct(product.product_id)" class="btn btn-danger">Delete</button></td>
             </tr>
@@ -92,7 +107,8 @@ data(){
         products:{},
         msgs:{},
         confirm:{},
-        getDatas:{}
+        getDatas:{},
+        likes:{}
 }
 },
 created(){
@@ -124,6 +140,12 @@ created(){
     let url3 = `http://localhost:3000/get/data/${email}`;
     this.axios.get(url3).then(response =>{
         this.getDatas = response.data;
+    })
+
+    var email= this.$session.get('email');
+    let url4 = `http://localhost:3000/other/liked/${email}`;
+    this.axios.get(url4).then(response =>{
+        this.likes = response.data;
     })
 },
 methods:{

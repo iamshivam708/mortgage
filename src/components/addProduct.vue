@@ -11,7 +11,12 @@
     <div class="form-group">
         <input type="text" name="title" placeholder="Product Title" class="form-control" v-model="product.title"/>   
     </div>
-    <div class="form-group">
+    <div class="form">
+        <select name="category" v-model="product.category" class="form-control">
+        <option v-for="category in categories" :key="category.cat_id">{{category.category}}</option>
+        </select>
+    </div>
+    <div class="form-group mt-3">
         <input type="text" name="description" placeholder="Product Description" class="form-control" v-model="product.description" />   
     </div>
     <div class="form-group">
@@ -33,8 +38,10 @@ data(){
             title:'',
             description:'',
             price:'',
-            file:''
-        }
+            file:'',
+            category:''
+        },
+        categories:{}
     }
 },
 created(){
@@ -46,6 +53,10 @@ created(){
            this.user = response.data;
        }).catch(err =>{
            console.error(err.message);
+       })
+       let url2= "http://localhost:3000/other/cat"
+       this.axios.get(url2).then(response =>{
+           this.categories = response.data;
        })
     }else{
         this.$router.push('/');
