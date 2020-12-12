@@ -13,7 +13,16 @@ router.get('/cat',function(req,res){
     })
 })
 
-
+//getting product according to categories
+router.get('/category/:category',function(req,res){
+    db.query("SELECT * FROM product WHERE category=?",[req.params.category],function(error,result){
+        if(error){
+            res.send(error);
+        }else{
+            res.send(result);
+        }
+    })
+})
 
 //getting liked posts for particular user
 router.get('/liked/:email',function(req,res){

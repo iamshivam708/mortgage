@@ -33,27 +33,36 @@
 
 <script>
 export default {
-name:'index',
+name:'category',
 data(){
-  return{
-    requiresAuth:false,
-    products:{},
-    categories:{}
-  }
+    return{
+        requiresAuth:false,
+        products:{},
+        categories:{},
+        cat: this.$route.params.category
+    }
+},
+watch:{
+    '$route' (to, from){
+        if(to.fullPath != from.fullPath){
+            location.reload();
+        }
+    }
 },
 created(){
-  if(this.$session.exists()){
+    if(this.$session.exists()){
     this.requiresAuth = true;
-    let url = "http://localhost:3000/user/getAll";
+    let url = `http://localhost:3000/other/category/${this.cat}`;
     this.axios.get(url).then(response =>{
-      this.products = response.data;
+        this.products = response.data;
     })
-  let url2 = "http://localhost:3000/other/cat";
+    let url2 = "http://localhost:3000/other/cat";
     this.axios.get(url2).then(response =>{
       this.categories = response.data;
     })
-
-  }
+    }
+},
+methods:{
 }
 }
 </script>
