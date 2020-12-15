@@ -121,9 +121,6 @@ created(){
        }).catch(err =>{
            console.error(err.message);
        })
-   }else{
-       this.$router.push('/');
-   }
     var email = this.$session.get('email');
     let uri = `http://localhost:3000/user/show/${email}`;
     this.axios.get(uri).then((response) =>{
@@ -147,6 +144,9 @@ created(){
     this.axios.get(url4).then(response =>{
         this.likes = response.data;
     })
+    }else{
+       this.$router.push('/');
+   }
 },
 methods:{
     deleteProduct(id){ 

@@ -77,6 +77,7 @@ data(){
     }
 },
 created(){
+    if(this.$session.exists()){
     const id = this.$route.params.id;
     let url = `http://localhost:3000/user/details/${id}`;
     this.axios.get(url).then((response) =>{
@@ -108,6 +109,9 @@ created(){
            this.disabled = true;
        }
     })
+    }else{
+        this.$router.push('/login');
+    }
 },
 methods:{
     offer(){

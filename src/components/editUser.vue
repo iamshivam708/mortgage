@@ -41,12 +41,16 @@ data(){
     }
 },
 created(){
+    if(this.$session.exists()){
     let url = `http://localhost:3000/user/${this.id}`;
        this.axios.get(url).then(response =>{
            this.user = response.data;
        }).catch(err =>{
            console.error(err.message);
        })
+    }else{
+        this.$router.push('/login');
+    }
 },
 methods: {
     update(){

@@ -59,7 +59,8 @@ created(){
     this.axios.get(url2).then(response =>{
       this.categories = response.data;
     })
-
+  }else{
+    this.$router.push('/login');
   }
 },
 methods:{

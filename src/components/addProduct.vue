@@ -59,7 +59,7 @@ created(){
            this.categories = response.data;
        })
     }else{
-        this.$router.push('/');
+        this.$router.push('/login');
     }
 },
 methods:{
